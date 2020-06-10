@@ -1,0 +1,76 @@
+vocabulary xsd {
+	prefix "xsd" "http://www.w3.org/2001/XMLSchema#"
+	datatypes int string boolean date datetime
+}
+
+language-tags {
+	en
+}
+
+vocabulary foaf {
+	prefix "foaf" "http://xmlns.com/foaf/0.1/"	
+	properties
+		primaryTopic
+}
+
+vocabulary geosparql {
+	prefix "geosparql" "http://www.opengis.net/ont/geosparql#"	
+	classes Point
+	properties
+		asWKT
+}
+
+vocabulary geo {
+	prefix "geo" "http://www.w3.org/2003/01/geo/wgs84_pos#"
+	properties
+		lat
+		long
+}
+
+
+
+vocabulary dc {
+	prefix "dc" "http://purl.org/dc/terms/"	
+	properties
+		identifier
+		modified
+		description
+}
+
+vocabulary rdfs {
+	prefix "rdfs" "http://www.w3.org/2000/01/rdf-schema#"	
+	properties
+		label
+		comment
+		seeAlso
+}
+
+vocabulary rdf {
+	prefix "rdf" "http://www.w3.org/1999/02/22-rdf-syntax-ns#"	
+	properties
+		_type "type"
+}
+
+vocabulary org {
+	prefix "org" "http://www.w3.org/ns/org#"
+	classes 
+		Organization		
+}
+
+vocabulary ndw {
+	prefix "ndw" "http://vocab.nvanoorschot.nl/ns/ndw/def/"
+	classes 
+		Situation
+		Obstruction
+		
+	properties
+		overallSeverity
+		cause
+		relatedSituation
+		situationRecord
+		situation
+		verhicleObstruction
+		mobilityOfObstruction
+		validFrom
+		validTo
+}

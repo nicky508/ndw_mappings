@@ -1,0 +1,39 @@
+output carml
+
+map situationMapping from ndwData.gebeurtenis_source {
+	subject template "http://data.nvanoorschot.nl/ndw/situation/{0}" with id;
+	types ndw.Situation
+	
+	properties
+		ndw.overallSeverity from severity with datatype xsd.string;
+		dc.identifier from id with datatype xsd.string;
+		ndw.relatedSituation template "http://data.nvanoorschot.nl/ndw/situation/{0}" with relatedSituation; 
+		ndw.situationRecord parent-map situationRecordMapping;
+}
+
+map situationRecordMapping from ndwData.gebeurtenis_source {
+	subject template "http://data.nvanoorschot.nl/ndw/situation/{0}/situationrecord/{1}" with id recordId;
+	types ndw.Situation
+	
+	properties
+		dc.identifier from recordId with datatype xsd.string;
+		ndw.situation template "http://data.nvanoorschot.nl/ndw/situation/{0}" with id;
+		rdf._type template "http://vocab.nvanoorschot.nl/ns/ndw/def/{0}" with recordType;
+		rdfs.comment from comment with datatype xsd.string;
+		ndw.validFrom from startOverallValidity with datatype xsd.datetime;
+		ndw.validTo from endOverallValidity with datatype xsd.datetime;
+		ndw.cause from cause with datatype xsd.string;
+		ndw.verhicleObstruction parent-map obstructionMapping;
+		geosparql.asWKT template "POINT({0} {1})" with lat long;
+		geo.lat from lat;
+		geo.long from long;		
+}
+
+map obstructionMapping from ndwData.gebeurtenis_source {
+	subject template "http://data.nvanoorschot.nl/ndw/situation/{0}/situationrecord/{1}/obstruction" with id recordId;
+	
+	properties
+		ndw.mobilityOfObstruction from verhicleObstructionMobility;
+		rdf._type from verhicleObstructionType;
+		rdf._type from obstructingVehicle;
+}

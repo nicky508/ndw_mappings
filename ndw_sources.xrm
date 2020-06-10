@@ -1,0 +1,31 @@
+xml-namespace-extension datatexNs {
+	prefix "soap" "http://schemas.xmlsoap.org/soap/envelope/"
+	prefix "datex" "http://datex2.eu/schema/2/2_0"
+	prefix "xsi" "http://www.w3.org/2001/XMLSchema-instance"
+}
+	
+source-group ndwData {	
+	type xml
+	
+	logical-source gebeurtenis_source {
+		source "http://opendata.ndw.nu/gebeurtenisinfo.xml.gz"
+		xml-namespace-extension datatexNs
+		iterator "/soap:Envelope/soap:Body/datex:d2LogicalModel/payloadPublication/situation"
+		
+		referenceables
+			id "./@id"
+			recordId "situationRecord/@id"
+			relatedSituation "relatedSituation/@id"
+			severity "./overallSeverity"
+			recordType "situationRecord/@xsi:type"
+			startOverallValidity "./situationRecord/validity/validityTimeSpecification/overallStartTime"
+			endOverallValidity "./situationRecord/validity/validityTimeSpecification/overallEndTime"
+			cause "./situationRecord/cause/causeDescription/values/value"
+			comment "./situationRecord/generalPublicComment/comment/values/value"
+			obstructingVehicle "./situationRecord/obstructingVehicle/vehicleCharacteristics/vehicleUsage"
+			verhicleObstructionType "./situationRecord/vehicleObstructionType"
+			verhicleObstructionMobility "./situationRecord/mobilityOfObstruction/mobilityType"
+			lat "./situationRecord/groupOfLocations/locationForDisplay/latitude"
+			long "./situationRecord/groupOfLocations/locationForDisplay/longitude"
+	}	
+}

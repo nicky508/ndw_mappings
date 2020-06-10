@@ -1,0 +1,210 @@
+PREFIX rr: <http://www.w3.org/ns/r2rml#>
+PREFIX rml: <http://semweb.mmlab.be/ns/rml#>
+PREFIX ql: <http://semweb.mmlab.be/ns/ql#>
+PREFIX carml: <http://carml.taxonic.com/carml/>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX geosparql: <http://www.opengis.net/ont/geosparql#>
+PREFIX ndw: <http://vocab.nvanoorschot.nl/ns/ndw/def/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+<#situationMapping>
+	rml:logicalSource [
+		rml:source [
+			a carml:Stream ;
+			carml:streamName "http://opendata.ndw.nu/gebeurtenisinfo.xml.gz" ;
+			carml:declaresNamespace [
+				carml:namespacePrefix "soap" ;
+				carml:namespaceName "http://schemas.xmlsoap.org/soap/envelope/" ;
+			] ;
+			carml:declaresNamespace [
+				carml:namespacePrefix "datex" ;
+				carml:namespaceName "http://datex2.eu/schema/2/2_0" ;
+			] ;
+			carml:declaresNamespace [
+				carml:namespacePrefix "xsi" ;
+				carml:namespaceName "http://www.w3.org/2001/XMLSchema-instance" ;
+			] ;
+		] ;
+		rml:referenceFormulation ql:XPath ;
+		rml:iterator "/soap:Envelope/soap:Body/datex:d2LogicalModel/payloadPublication/situation" ;
+	];
+	
+	rr:subjectMap [
+		rr:template "http://data.nvanoorschot.nl/ndw/situation/{./@id}" ;
+		rr:class ndw:Situation ;
+	];
+	
+	rr:predicateObjectMap [
+		rr:predicate ndw:overallSeverity ;
+		rr:objectMap [
+			rml:reference "./overallSeverity" ;
+			rr:datatype xsd:string ;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate dc:identifier ;
+		rr:objectMap [
+			rml:reference "./@id" ;
+			rr:datatype xsd:string ;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate ndw:relatedSituation ;
+		rr:objectMap [
+			rr:template "http://data.nvanoorschot.nl/ndw/situation/{relatedSituation/@id}" ;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate ndw:situationRecord ;
+		rr:objectMap [
+			rr:parentTriplesMap  <#situationRecordMapping> ;
+		];
+	]
+.
+<#situationRecordMapping>
+	rml:logicalSource [
+		rml:source [
+			a carml:Stream ;
+			carml:streamName "http://opendata.ndw.nu/gebeurtenisinfo.xml.gz" ;
+			carml:declaresNamespace [
+				carml:namespacePrefix "soap" ;
+				carml:namespaceName "http://schemas.xmlsoap.org/soap/envelope/" ;
+			] ;
+			carml:declaresNamespace [
+				carml:namespacePrefix "datex" ;
+				carml:namespaceName "http://datex2.eu/schema/2/2_0" ;
+			] ;
+			carml:declaresNamespace [
+				carml:namespacePrefix "xsi" ;
+				carml:namespaceName "http://www.w3.org/2001/XMLSchema-instance" ;
+			] ;
+		] ;
+		rml:referenceFormulation ql:XPath ;
+		rml:iterator "/soap:Envelope/soap:Body/datex:d2LogicalModel/payloadPublication/situation" ;
+	];
+	
+	rr:subjectMap [
+		rr:template "http://data.nvanoorschot.nl/ndw/situation/{./@id}/situationrecord/{situationRecord/@id}" ;
+		rr:class ndw:Situation ;
+	];
+	
+	rr:predicateObjectMap [
+		rr:predicate dc:identifier ;
+		rr:objectMap [
+			rml:reference "situationRecord/@id" ;
+			rr:datatype xsd:string ;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate ndw:situation ;
+		rr:objectMap [
+			rr:template "http://data.nvanoorschot.nl/ndw/situation/{./@id}" ;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rdf:type ;
+		rr:objectMap [
+			rr:template "http://vocab.nvanoorschot.nl/ns/ndw/def/{situationRecord/@xsi:type}" ;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rdfs:comment ;
+		rr:objectMap [
+			rml:reference "./situationRecord/generalPublicComment/comment/values/value" ;
+			rr:datatype xsd:string ;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate ndw:validFrom ;
+		rr:objectMap [
+			rml:reference "./situationRecord/validity/validityTimeSpecification/overallStartTime" ;
+			rr:datatype xsd:datetime ;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate ndw:validTo ;
+		rr:objectMap [
+			rml:reference "./situationRecord/validity/validityTimeSpecification/overallEndTime" ;
+			rr:datatype xsd:datetime ;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate ndw:cause ;
+		rr:objectMap [
+			rml:reference "./situationRecord/cause/causeDescription/values/value" ;
+			rr:datatype xsd:string ;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate ndw:verhicleObstruction ;
+		rr:objectMap [
+			rr:parentTriplesMap  <#obstructionMapping> ;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate geosparql:asWKT ;
+		rr:objectMap [
+			rr:template "POINT({./situationRecord/groupOfLocations/locationForDisplay/latitude} {./situationRecord/groupOfLocations/locationForDisplay/longitude})" ;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate geo:lat ;
+		rr:objectMap [
+			rml:reference "./situationRecord/groupOfLocations/locationForDisplay/latitude" ;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate geo:long ;
+		rr:objectMap [
+			rml:reference "./situationRecord/groupOfLocations/locationForDisplay/longitude" ;
+		];
+	]
+.
+<#obstructionMapping>
+	rml:logicalSource [
+		rml:source [
+			a carml:Stream ;
+			carml:streamName "http://opendata.ndw.nu/gebeurtenisinfo.xml.gz" ;
+			carml:declaresNamespace [
+				carml:namespacePrefix "soap" ;
+				carml:namespaceName "http://schemas.xmlsoap.org/soap/envelope/" ;
+			] ;
+			carml:declaresNamespace [
+				carml:namespacePrefix "datex" ;
+				carml:namespaceName "http://datex2.eu/schema/2/2_0" ;
+			] ;
+			carml:declaresNamespace [
+				carml:namespacePrefix "xsi" ;
+				carml:namespaceName "http://www.w3.org/2001/XMLSchema-instance" ;
+			] ;
+		] ;
+		rml:referenceFormulation ql:XPath ;
+		rml:iterator "/soap:Envelope/soap:Body/datex:d2LogicalModel/payloadPublication/situation" ;
+	];
+	
+	rr:subjectMap [
+		rr:template "http://data.nvanoorschot.nl/ndw/situation/{./@id}/situationrecord/{situationRecord/@id}/obstruction" ;
+	];
+	
+	rr:predicateObjectMap [
+		rr:predicate ndw:mobilityOfObstruction ;
+		rr:objectMap [
+			rml:reference "./situationRecord/mobilityOfObstruction/mobilityType" ;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rdf:type ;
+		rr:objectMap [
+			rml:reference "./situationRecord/vehicleObstructionType" ;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rdf:type ;
+		rr:objectMap [
+			rml:reference "./situationRecord/obstructingVehicle/vehicleCharacteristics/vehicleUsage" ;
+		];
+	]
+.

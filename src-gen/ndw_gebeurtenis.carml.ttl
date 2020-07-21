@@ -89,7 +89,6 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 	
 	rr:subjectMap [
 		rr:template "http://data.nvanoorschot.nl/ndw/situation/{./@id}/situationrecord/{situationRecord/@id}" ;
-		rr:graph <http://data.nvanoorschot.nl/ndw/graph/situation> ;
 		rr:class ndw:Situation ;
 	];
 	
@@ -189,7 +188,6 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 	
 	rr:subjectMap [
 		rr:template "http://data.nvanoorschot.nl/ndw/situation/{./@id}/situationrecord/{situationRecord/@id}/obstruction" ;
-		rr:graph <http://data.nvanoorschot.nl/ndw/graph/situation> ;
 	];
 	
 	rr:predicateObjectMap [

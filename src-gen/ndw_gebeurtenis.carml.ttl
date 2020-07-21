@@ -34,6 +34,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 	
 	rr:subjectMap [
 		rr:template "http://data.nvanoorschot.nl/ndw/situation/{./@id}" ;
+		rr:graph <http://data.nvanoorschot.nl/ndw/graph/situation> ;
 		rr:class ndw:Situation ;
 	];
 	
